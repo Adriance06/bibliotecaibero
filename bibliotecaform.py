@@ -30,7 +30,7 @@ def windowuser():
     txtcell.grid(row=3, column=1, pady=20, padx=20) 
     btnuser = tk.Button(window2, text="Registrar usuario", command=createuser)
     btnuser.grid(row=4, column=0, columnspan=2, pady=20, padx=20)
-    btnvolver1 = tk.Button(window2, text="Volver al menu principal")
+    btnvolver1 = tk.Button(window2, text="Volver al menu principal"command=lambda:window2.destroy())
     btnvolver1.grid(row=0,column=5,pady=20,padx=20)
     
     window2.mainloop()
@@ -66,7 +66,7 @@ def windowbooks():
     txtgenero.grid(row=3, column=1, pady=20, padx=20) 
     btnbook = tk.Button(window3, text="Registrar Libro", command=createbook)
     btnbook.grid(row=4, column=0, columnspan=2, pady=20, padx=20)
-    btnvolver2 = tk.Button(window3, text="Volver al menu principal")
+    btnvolver2 = tk.Button(window3, text="Volver al menu principal"command=lambda:window3.destroy())
     btnvolver2.grid(row=0,column=5,pady=20,padx=20)
     
     window3.mainloop()
@@ -122,10 +122,10 @@ def listbook():
 
 #7- Registrar prestamo--------------------------------------------------------------------------------------
 def windowloan():
-    global window8
+    global window8, tablep
     window8 = tk.Toplevel()
     #window4.geometry("600x600")
-    window8.title("Lista de usuarios")
+    window8.title("Registrar prestamos")
     
     global txtnamepres,txttitlepres,txtfechapres
     
@@ -164,10 +164,18 @@ def windowloan():
 
 #funcion creadora de prestamo--------------------------------------------------------------------------------------
 def createloan():
-    regisbook = {"Nombre usuario": txtnamepres.get(), "Titulo libro": txttitlepres.get(),"Fecha de prestamo": txtfechapres.get()}
-    books.append(regisbook)
-    messagebox.showinfo("Registro exitoso","Libro registrado con exito")
+    regisloan = {"Nombre usuario": txtnamepres.get(), "Titulo libro": txttitlepres.get(),"Fecha de prestamo": txtfechapres.get()}
+    loans.append(regisloan)
+    messagebox.showinfo("Registro exitoso","Prestamo registrado con exito")
     window8.lift()
+    reloadtablepres()
+    
+#funcion que recarga la tabla de prestamos--------------------------------------------------------------------------------------
+def reloadtablepres():
+    tablep.delete(*tablep.get_children())
+    for lloan in loans:
+        tablep.insert("","end",values=(lloan["Nombre usuario"],lloan["Titulo libro"],lloan["Fecha de prestamo"]))
+#--------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------
 #-Menu principal-------------------------------------------------------------------------------------
@@ -203,7 +211,7 @@ btn7.grid(row=7,column=0,pady=20,padx=20)
 btn8 = tk.Button(window, text="Registrar devoluciones", command=createuser)
 btn8.grid(row=8,column=0,pady=20,padx=20)
 #-----------------------------------------------
-btn9 = tk.Button(window, text="Salir", command=lambda:window.quit)
+btn9 = tk.Button(window, text="Salir", command=window.quit)
 btn9.grid(row=9,column=0,pady=20,padx=20)    
     
 window.mainloop()    
