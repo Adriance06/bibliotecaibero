@@ -5,6 +5,7 @@ from tkinter import messagebox
 users = [{"Nombre": "Manuel", "Correo": "manuel@gmail.com", "Celular": "3224455678"}]
 books = [{"Titulo":"Cien años de soledad","Autor": "Gabriel Garcia","Genero":"Novela"}]
 loans = [{"Nombre usuario": "Juan","Titulo libro":"La leyenda de yuripari","Fecha de prestamo": "2025-03-23"}]
+returns = [{"Nombre usuario": "Andres","Titulo libro":"La llorona","Fecha de devolucion": "2025-03-23"}]
 
 #registrar usuario--------------------------------------------------------------------------------------
 def windowuser():
@@ -30,7 +31,7 @@ def windowuser():
     txtcell.grid(row=3, column=1, pady=20, padx=20) 
     btnuser = tk.Button(window2, text="Registrar usuario", command=createuser)
     btnuser.grid(row=4, column=0, columnspan=2, pady=20, padx=20)
-    btnvolver1 = tk.Button(window2, text="Volver al menu principal"command=lambda:window2.destroy())
+    btnvolver1 = tk.Button(window2, text="Volver al menu principal",command=lambda:window2.destroy())
     btnvolver1.grid(row=0,column=5,pady=20,padx=20)
     
     window2.mainloop()
@@ -64,9 +65,9 @@ def windowbooks():
     lbl3_3.grid(row=3,column=0, pady=20, padx=20)
     txtgenero = tk.Entry(window3)
     txtgenero.grid(row=3, column=1, pady=20, padx=20) 
-    btnbook = tk.Button(window3, text="Registrar Libro", command=createbook)
+    btnbook = tk.Button(window3, text="Registrar Libro", command=createbook,)
     btnbook.grid(row=4, column=0, columnspan=2, pady=20, padx=20)
-    btnvolver2 = tk.Button(window3, text="Volver al menu principal"command=lambda:window3.destroy())
+    btnvolver2 = tk.Button(window3, text="Volver al menu principal",command=lambda:window3.destroy())
     btnvolver2.grid(row=0,column=5,pady=20,padx=20)
     
     window3.mainloop()
@@ -81,6 +82,7 @@ def createbook():
 
 #3-listar usuarios--------------------------------------------------------------------------------------
 def listuser():
+    global window4
     window4 = tk.Toplevel()
     #window4.geometry("600x600")
     window4.title("Lista de usuarios")
@@ -96,12 +98,14 @@ def listuser():
         tableu.insert("","end",values=(luser["Nombre"],luser["Correo"],luser["Celular"]))
 
     tableu.grid(row=1,column=0,pady=20,padx=20)
-    btnvolver = tk.Button(window4, )
+    btnvolver = tk.Button(window4, text="Volver al menu principal", command=lambda:window4.destroy())
+    btnvolver.grid(row=2,column=0,pady=20,padx=20)
     window4.mainloop()
 
 #--------------------------------------------------------------------------------------
 #5- Listar libros--------------------------------------------------------------------------------------
 def listbook():
+    global window6
     window6 = tk.Toplevel()
     #window4.geometry("600x600")
     window6.title("Lista de libros")
@@ -117,7 +121,8 @@ def listbook():
         tableu.insert("","end",values=(lbook["Titulo"],lbook["Autor"],lbook["Genero"]))
 
     tableu.grid(row=1,column=0,pady=20,padx=20)
-    btnvolver = tk.Button(window6, )
+    btnvolver = tk.Button(window6, text="Volver al menu principal", command=lambda:window6.destroy())
+    btnvolver.grid(row=2,column=0,pady=20,padx=20)
     window6.mainloop()
 
 #7- Registrar prestamo--------------------------------------------------------------------------------------
@@ -125,7 +130,7 @@ def windowloan():
     global window8, tablep
     window8 = tk.Toplevel()
     #window4.geometry("600x600")
-    window8.title("Registrar prestamos")
+    window8.title("Lista de usuarios")
     
     global txtnamepres,txttitlepres,txtfechapres
     
@@ -176,10 +181,63 @@ def reloadtablepres():
     for lloan in loans:
         tablep.insert("","end",values=(lloan["Nombre usuario"],lloan["Titulo libro"],lloan["Fecha de prestamo"]))
 #--------------------------------------------------------------------------------------
+#7- Registrar prestamo--------------------------------------------------------------------------------------
+def windowreturns():
+    global window9, tabled
+    window9 = tk.Toplevel()
+    #window4.geometry("600x600")
+    window9.title("Registrar prestamos")
+    
+    global txtnamedev,txttitledev,txtfechadev
+    
+    lbl1p = tk.Label(window9, text="Digite los siguientes datos para hacer el registro de la devolución")
+    lbl1p.grid(row=0,column=0, pady=20, padx=20)
+    lbl2p = tk.Label(window9, text="Nombre del usuario:")
+    lbl2p.grid(row=1,column=0, pady=20, padx=20)
+    txtnamedev = tk.Entry(window9)
+    txtnamedev.grid(row=1, column=1, pady=20, padx=20) 
+    lbl3p = tk.Label(window9, text="Titulo del libro:")
+    lbl3p.grid(row=2,column=0, pady=20, padx=20)
+    txttitledev = tk.Entry(window9)
+    txttitledev.grid(row=2, column=1, pady=20, padx=20) 
+    lbl4p = tk.Label(window9, text="Fecha de devolución:")
+    lbl4p.grid(row=3,column=0, pady=20, padx=20)
+    txtfechadev = tk.Entry(window9)
+    txtfechadev.grid(row=3, column=1, pady=20, padx=20) 
+    btndev = tk.Button(window9, text="Registrar Devolución", command=createreturn)
+    btndev.grid(row=4, column=0, columnspan=2, pady=20, padx=20)
+    btnvolverd = tk.Button(window9, text="Volver al menu principal", command=lambda:window9.destroy())
+    btnvolverd.grid(row=4,column=1,pady=20,padx=20)
+ 
+    lbllistd = tk.Label(window9,text="Esta es la lista de las devolucionees registrados")
+    lbllistd.grid(row=5,column=0,pady=20,padx=20)
+    tabled = ttk.Treeview(window9,columns=("Nombre usuario","Titulo libro","Fecha de prestamo"),show="headings")
+    tabled.heading("Nombre usuario",text="Nombre usuario") 
+    tabled.heading("Titulo libro",text="Titulo libro") 
+    tabled.heading("Fecha de prestamo",text="Fecha de prestamo") 
+    
+    for lreturn in returns:
+        tabled.insert("","end",values=(lreturn["Nombre usuario"],lreturn["Titulo libro"],lreturn["Fecha de devolucion"]))
 
-#--------------------------------------------------------------------------------------
+    tabled.grid(row=6,column=0,pady=20,padx=20)
+   
+    window9.mainloop()
+
+#funcion creadora de devoluciones--------------------------------------------------------------------------------------
+def createreturn():
+    regisreturn = {"Nombre usuario": txtnamedev.get(), "Titulo libro": txttitledev.get(),"Fecha de devolucion": txtfechadev.get()}
+    returns.append(regisreturn)
+    messagebox.showinfo("Registro exitoso","Devolución registrada con exito")
+    window9.lift()
+    reloadtabledev()
+    
+#funcion que recarga la tabla de devoluciones--------------------------------------------------------------------------------------
+def reloadtabledev():
+    tabled.delete(*tabled.get_children())
+    for lreturn in returns:
+        tabled.insert("","end",values=(lreturn["Nombre usuario"],lreturn["Titulo libro"],lreturn["Fecha de devolucion"]))
 #-Menu principal-------------------------------------------------------------------------------------
-
+global window
 window = tk.Tk()
 window.geometry("600x700")
 window.title("Menu biblioteca")
@@ -208,7 +266,7 @@ btn6.grid(row=6,column=0,pady=20,padx=20)
 btn7 = tk.Button(window, text="Registrar prestamos", command=windowloan)
 btn7.grid(row=7,column=0,pady=20,padx=20)
 #-----------------------------------------------
-btn8 = tk.Button(window, text="Registrar devoluciones", command=createuser)
+btn8 = tk.Button(window, text="Registrar devoluciones", command=windowreturns)
 btn8.grid(row=8,column=0,pady=20,padx=20)
 #-----------------------------------------------
 btn9 = tk.Button(window, text="Salir", command=window.quit)
